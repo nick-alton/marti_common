@@ -182,6 +182,42 @@ TEST(UtmUtilTests, Random)
     EXPECT_FLOAT_EQ(lon, new_lon);
   }
 }
+TEST(UtmUtilTests, NegativeNorthing)
+{
+  swri_transform_util::UtmUtil utm_util;
+
+  //True values from testing south of the equator.
+  double lon = 137.39554;
+  double lat = -32.73248;
+
+  double easting = 724486.218359;
+  double northing = -3624171.69295;
+
+  char band;
+  int zone;
+  double new_easting;
+  double new_northing;
+  utm_util.ToUtm(lat, lon, zone, band, new_easting, new_northing);
+  //Does it correct the northing?
+  EXPECT_NEAR(easting, new_easting, 5.0);
+  EXPECT_NEAR(northing + 10000000, new_northing, 5.0);
+
+  double new_lat;
+  double new_lon;
+  utm_util.ToLatLon(zone, band, new_easting, new_northing, new_lat, new_lon);
+  //We able to go back?
+  EXPECT_FLOAT_EQ(lat, new_lat);
+  EXPECT_FLOAT_EQ(lon, new_lon);
+
+  double test_lat;
+  double test_lon;
+  utm_util.ToLatLon(zone, band, easting, northing, test_lat, test_lon);
+  //Can we use our original N/E to get the right lat/lon?
+  EXPECT_NEAR(test_lat, lat, 0.00005);
+  EXPECT_NEAR(test_lon, lon, 0.00005);
+
+}
+
 
 // Run all the tests that were declared with TEST()
 int main(int argc, char **argv)

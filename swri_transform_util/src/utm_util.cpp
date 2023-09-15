@@ -136,6 +136,12 @@ namespace swri_transform_util
       pj_transform(lat_lon_, utm_north_[zone - 1], 1, 0, &x, &y, NULL);
     }
 
+    //correct for southern hemisphere(if things give a negative northing)
+    if (y < 0)
+    {
+      y += 10000000;
+    }
+
     easting = x;
     northing = y;
   }
@@ -164,6 +170,12 @@ namespace swri_transform_util
 
     double x = easting;
     double y = northing;
+
+    //correct for southern hemisphere(if things give a negative northing)
+    if (y < 0)
+    {
+      y += 10000000;
+    }
 
     if (band <= 'N')
     {
