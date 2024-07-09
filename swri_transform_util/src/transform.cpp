@@ -58,12 +58,40 @@ namespace swri_transform_util
     transform_(transform)
   {
     auto logger = rclcpp::get_logger("Transform::Inverse");
+    auto init_orientation = transform->GetOrientation();
+    auto init_origin = transform->GetOrigin();
+    auto pointer_orientation = transform_->GetOrientation();
+    auto pointer_origin = transform_->GetOrigin();
+
     RCLCPP_ERROR(logger, "DJA: Making Pointer Transform");
+
+    RCLCPP_ERROR(logger, "DJA Transform Constructor: Init Origin: %f, %f, %f",
+      init_origin.x(), init_origin.y(), init_origin.z());
+    RCLCPP_ERROR(logger, "DJA Transform Constructor: Init Orientation: %f, %f, %f, %f",
+      init_orientation.x(), init_orientation.y(), init_orientation.z(), init_orientation.w());
+    RCLCPP_ERROR(logger, "DJA Transform Constructor: Copied Origin: %f, %f, %f",
+      pointer_origin.x(), pointer_origin.y(), pointer_origin.z());
+    RCLCPP_ERROR(logger, "DJA Transform Constructor: Copied Orientation: %f, %f, %f, %f",
+      pointer_orientation.x(), pointer_orientation.y(), pointer_orientation.z(), pointer_orientation.w());
   }
 
   Transform& Transform::operator=(const tf2::Transform transform)
   {
     transform_ = std::make_shared<TfTransform>(transform);
+
+    auto logger = rclcpp::get_logger("Transform::Assignment1");
+    auto init_orientation = transform.getRotation();
+    auto init_origin = transform.getOrigin();
+    auto pointer_orientation = transform_->GetOrientation();
+    auto pointer_origin = transform_->GetOrigin();
+    RCLCPP_ERROR(logger, "DJA Transform assignment 1: Init Origin: %f, %f, %f",
+      init_origin.x(), init_origin.y(), init_origin.z());
+    RCLCPP_ERROR(logger, "DJA Transform assignment 1: Init Orientation: %f, %f, %f, %f",
+      init_orientation.x(), init_orientation.y(), init_orientation.z(), init_orientation.w());
+    RCLCPP_ERROR(logger, "DJA Transform assignment 1: Copied Origin: %f, %f, %f",
+      pointer_origin.x(), pointer_origin.y(), pointer_origin.z());
+    RCLCPP_ERROR(logger, "DJA Transform assignment 1: Copied Orientation: %f, %f, %f, %f",
+      pointer_orientation.x(), pointer_orientation.y(), pointer_orientation.z(), pointer_orientation.w());
 
     return *this;
   }
@@ -71,6 +99,20 @@ namespace swri_transform_util
   Transform& Transform::operator=(std::shared_ptr<TransformImpl> transform)
   {
     transform_ = transform;
+
+    auto logger = rclcpp::get_logger("Transform::Assignment2");
+    auto init_orientation = transform->GetOrientation();
+    auto init_origin = transform->GetOrigin();
+    auto pointer_orientation = transform_->GetOrientation();
+    auto pointer_origin = transform_->GetOrigin();
+    RCLCPP_ERROR(logger, "DJA Transform assignment 2: Init Origin: %f, %f, %f",
+      init_origin.x(), init_origin.y(), init_origin.z());
+    RCLCPP_ERROR(logger, "DJA Transform assignment 2: Init Orientation: %f, %f, %f, %f",
+      init_orientation.x(), init_orientation.y(), init_orientation.z(), init_orientation.w());
+    RCLCPP_ERROR(logger, "DJA Transform assignment 2: Copied Origin: %f, %f, %f",
+      pointer_origin.x(), pointer_origin.y(), pointer_origin.z());
+    RCLCPP_ERROR(logger, "DJA Transform assignment 2: Copied Orientation: %f, %f, %f, %f",
+      pointer_orientation.x(), pointer_orientation.y(), pointer_orientation.z(), pointer_orientation.w());
 
     return *this;
   }
